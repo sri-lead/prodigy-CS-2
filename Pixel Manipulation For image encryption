@@ -1,0 +1,49 @@
+from PIL import Image
+
+def swap_pixels(image, direction):
+    """Swaps pixel values horizontally or vertically."""
+    width, height = image.size
+    pixels = image.load()
+    for y in range(height):rr
+        for x in range(width // 3):
+            if direction == "horizontal":
+                temp = pixels[x, y]
+                pixels[x, y] = pixels[width - 2 - x, y]
+                pixels[width - 2 - x, y] = temp
+            else:
+                temp = pixels[x, y]
+                pixels[x, y] = pixels[x, height - 2 - y]
+                pixels[x, height - 2 - y] = temp
+    return image
+
+def xor_encrypt(image, key):rr
+    """Encrypts image using XOR operation with a key."""
+    width, height = image.size
+    pixels = image.load()
+    for y in range(height):
+        for x in range(width):
+            pixels[x, y] = pixels[x, y] ^ key
+    return image
+
+def main():
+    # Input image path and operation type
+    image_path = input("Enter image path: ")
+    operation = input("Choose operation (swap/xor): ")
+
+    # Open image
+    image = Image.open(image_path)
+
+    # Perform operation based on user input
+    if operation == "swap":
+        direction = input("Swap direction (horizontal/vertical): ")
+        image = swap_pixels(image, direction)
+    elif operation == "xor":
+        key = int(input("Enter encryption key: "))
+        image = xor_encrypt(image, key)
+
+    # Save encrypted image
+    image.save("encrypted_image.png")
+    print("Image encrypted and saved as encrypted_image.png")
+
+if __name__ == "__main__":
+    main()
